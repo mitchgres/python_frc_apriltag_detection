@@ -45,18 +45,14 @@ class ApriltagDetector:
         Takes the object's height and width in pixels and then calculates distance to the target in mm. Mind that dependent on camera model and target used the constants 
         declared will vary. 
         """
-        FOCAL_LENGTH = 28
-        SENSOR_WIDTH = 10 # Placeholder values. 
-        SENSOR_HEIGHT = 10 #
-        REAL_OBJECT_HEIGHT_AND_WIDTH = 15 #
-        IMAGE_RESOLUTION_HEIGHT = 720
-        IMAGE_RESOLUTION_WIDTH = 1280
+        REAL_OBJECT_HEIGHT_AND_WIDTH_IN = 3.2
+        FOCAL_DISTANCE_CONSTANT = 665
 
         # You'll want to take the larger of the two value as the larger will be the most accurate to the target if it's at an angle. 
         if objectHeight >= objectWidth:
-            distance = (FOCAL_LENGTH  * REAL_OBJECT_HEIGHT_AND_WIDTH * IMAGE_RESOLUTION_HEIGHT) / (objectHeight * SENSOR_HEIGHT)            
+            distance = (REAL_OBJECT_HEIGHT_AND_WIDTH_IN * FOCAL_DISTANCE_CONSTANT) / objectHeight
         else:
-            distance = (FOCAL_LENGTH  * REAL_OBJECT_HEIGHT_AND_WIDTH * IMAGE_RESOLUTION_WIDTH) / (objectWidth * SENSOR_WIDTH)  
+            distance = (REAL_OBJECT_HEIGHT_AND_WIDTH_IN * FOCAL_DISTANCE_CONSTANT) / objectWidth
 
         return distance
 
@@ -91,7 +87,7 @@ class ApriltagDetector:
             targetDistance = self.__findDistance(targetSizeY, targetSizeX)
 
         # Draws the dimensions of the box on the image along with it's distance to the camera. 
-            cv2.putText(image, "X: {}px | Y: {}px | Distance {}mm".format(targetSizeX, targetSizeY, round(targetDistance, 2)), (ptA[0], ptA[1] - 15),
+            cv2.putText(image, "X: {}px | Y: {}px | Distance {}in".format(targetSizeX, targetSizeY, round(targetDistance, 2)), (ptA[0], ptA[1] - 15),
 		        FONT, 0.5, (0, 255, 0), 2)
 
         return image
